@@ -1,0 +1,6 @@
+dataset,configuration,cases,avg_nll,relative_nll_change_pct
+general,exact,100,0.791885,0
+general,Lite,100,0.790828,-0.13
+general,Fast,100,0.7986,0.85
+general,Faster,100,0.8020,1.3
+general,Turbo,100,0.8110,2.4

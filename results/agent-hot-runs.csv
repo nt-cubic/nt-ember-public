@@ -1,0 +1,11 @@
+date,engine,configuration,routing,speculation,observation,hot_decode_tps,all_decode_tps,completion_tokens
+,nt-llama,baseline,exact,DSpark,1,34.34,,
+2026-11-21,EMBER,initial_service,exact,none,1,53.73,53.67,13349
+2026-11-22,EMBER,draft_verification,exact,DSpark_and_suffix,1,61.36,,
+2026-11-22,EMBER,Fast,lossy,enabled,1,78.67,,
+2026-11-22,EMBER,Fast,lossy,enabled,2,72.58,,
+2026-11-22,EMBER,Fast,lossy,enabled,3,72.20,,
+2026-11-22,EMBER,Faster,lossy,enabled,1,80.46,,
+2026-11-22,EMBER,Faster,lossy,enabled,2,80.33,,
+2026-11-22,EMBER,Turbo,lossy,enabled,1,84.08,,
+2026-11-22,EMBER,Turbo,lossy,enabled,2,83.57,,

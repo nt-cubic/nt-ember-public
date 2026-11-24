@@ -1,0 +1,8 @@
+workload,engine,configuration,metric,unit,low,high,aggregation
+tool_agent,EMBER,exact,hot_decode,token/s,58,64,reported_range
+decode_microbench_free,EMBER,exact_no_speculation,decode,token/s,52,64,reported_range
+prefill_14392,EMBER,exact,prefill,token/s,2824,3069,observed_range
+append_470,EMBER,prefix_reused,first_output,s,1.90,1.95,observed_range
+append_470,nt-llama,prefix_reused,first_output,s,4.3,4.3,reported_value
+short_greedy_6_categories,EMBER,exact,decode,token/s,71.6,71.6,reported_mean
+short_greedy_6_categories,EMBER,Lite,decode,token/s,85.4,85.4,reported_mean

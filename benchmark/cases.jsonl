@@ -1,0 +1,3 @@
+{"id":"prose","request":{"messages":[{"role":"user","content":"Explain why steam fogs a cold window. Use four short sentences."}],"temperature":0,"max_tokens":128}}
+{"id":"json","request":{"messages":[{"role":"user","content":"Return a JSON array of five imaginary ferry departures. Each object should have route, departure_time, and seats_available. Use 24-hour times."}],"temperature":0,"max_tokens":192}}
+{"id":"code","request":{"messages":[{"role":"user","content":"Write a Python function to merge two sorted lists of integers, retaining duplicates. Include two example calls."}],"temperature":0,"max_tokens":192}}

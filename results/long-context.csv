@@ -1,0 +1,5 @@
+prompt_label,routing,speculation,prefill_seconds_low,prefill_seconds_high,decode_tokens,decode_tps_low,decode_tps_high,needle_depths,needle_passed
+32K,exact,none,13.6,13.6,400,47.3,47.3,,
+64K,exact,none,26,27,400,43,46,10% 50% 90%,3
+128K,exact,none,48.7,48.7,400,45.7,45.7,10% 50% 90%,3
+245K,exact,none,102,120,400,45.4,45.4,10% 50% 90%,3
