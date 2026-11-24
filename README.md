@@ -6,7 +6,7 @@
 
 EMBER is an offline inference engine for a single user. It runs the UD-IQ1_S quantization of DeepSeek-V4.1-Flash-1017 on one Windows 11 workstation with an RTX 5090 (32 GB VRAM) and 128 GB of system RAM. Once the model and runtime dependencies are in place, inference runs entirely on the local machine.
 
-This repository publishes the technical report, benchmark protocol, standalone tools, and measurement records. The EMBER engine is closed source. [Compatibility and availability](FAQ.md)
+This repository publishes the technical report, benchmark protocol, standalone tools, and measurement records. We plan to open-source the EMBER engine after we finish work on streaming weights from SSD and complete end-to-end testing with a full 1M-token context. [Open-source plans and compatibility](FAQ.md)
 
 ## Single-workstation results
 

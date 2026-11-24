@@ -2,9 +2,9 @@
 
 **English** · [简体中文](FAQ.zh-CN.md)
 
-## Is EMBER open source? Where can I get it?
+## When will EMBER be open source?
 
-The EMBER inference engine is closed source. This repository provides the public report, standalone benchmark and scoring-summary scripts, and published measurement data. To discuss distribution or integration, contact the maintainer. [Technical discussion and collaboration](CONTACT.md)
+We plan to open-source the EMBER inference engine once SSD weight streaming is ready and end-to-end testing with a full 1M-token context is complete. The current public materials include the technical report, standalone benchmark and scoring-summary scripts, and measurement data. To discuss distribution or integration, contact the maintainer. [Technical discussion and collaboration](CONTACT.md)
 
 ## Which platforms and models have been tested?
 
