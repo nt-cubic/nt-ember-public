@@ -10,6 +10,19 @@ This repository publishes the technical report, benchmark protocol, standalone t
 
 ## Single-workstation results
 
+### Short-prompt generation by output type
+
+Turbo mode, greedy decoding, one RTX 5090.
+
+| Output type | Decode throughput |
+| --- | ---: |
+| Tables | 127 tokens/s |
+| JSON | 112 tokens/s |
+| Code | 88–95 tokens/s |
+| Prose | 66–67 tokens/s |
+
+### Agent, prefill, and long-context workloads
+
 | Workload | EMBER result |
 | --- | --- |
 | 10 turns with tool calls and sampling, warm decode over turns 2–10 | 58–64 tokens/s in Exact mode. Turbo averaged 83.8 tokens/s across two runs |
