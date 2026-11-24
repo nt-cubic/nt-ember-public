@@ -1,6 +1,8 @@
-# 技术交流与合作
+# Technical Discussion and Collaboration
 
-- **测量方法、复现或文档问题** · 在 GitHub Issues 提交。附硬件、系统、驱动、模型量化、请求设置和相关时间指标即可。 [提交 Issue](https://github.com/nt-cubic/nt-ember-public/issues/new)
-- **技术交流与合作** · 在 Issues 中简述方向，例如单机推理、Windows/CUDA 优化或联合测评，并说明希望采用的联系渠道。 [项目 Issues](https://github.com/nt-cubic/nt-ember-public/issues)
+**English** · [简体中文](CONTACT.zh-CN.md)
 
-Issues 为公开场所。涉及客户数据或未公开实现的交流，请先在 Issue 中约定私下渠道。 [维护者 GitHub 主页](https://github.com/nt-cubic)
+- **Measurement, reproduction, and documentation.** Open a GitHub issue with the hardware, OS, driver, model quantization, request settings, and relevant timing metrics. [Open an issue](https://github.com/nt-cubic/nt-ember-public/issues/new)
+- **Technical discussion and collaboration.** Briefly describe the topic, such as single-workstation inference, Windows or CUDA optimization, or joint benchmarking, and indicate your preferred way to connect. [Project issues](https://github.com/nt-cubic/nt-ember-public/issues)
+
+GitHub issues are public. For discussions involving customer data or unpublished implementation details, use the issue to arrange a private channel first. [Maintainer's GitHub profile](https://github.com/nt-cubic)

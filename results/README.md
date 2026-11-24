@@ -1,17 +1,19 @@
-# 测试数据
+# Measurement Data
 
-| 文件 | 粒度 | 内容 |
+**English** · [简体中文](README.zh-CN.md)
+
+| File | Level of detail | Contents |
 | --- | --- | --- |
-| [quality/](quality/) | 原始逐样例 TSV | 5 份评分器输出，按样例 ID 保存 token 数、NLL、首 token 命中和贪心 LCP |
-| [decode-microbench-runs.csv](decode-microbench-runs.csv) | 历史逐次测量摘录 | 28 token 提示、1,500 token 解码，记录各配置的三次测量与 token 来源 |
-| [agent-hot-runs.csv](agent-hot-runs.csv) | 历史逐次测量摘录 | 内部工具调用合约，保留已记录的逐次热态速度与可用的全轮指标 |
-| [performance-summary.csv](performance-summary.csv) | 历史汇总 | 精确档速度范围、14,392 token 预填充、追问及 Lite 短提示 |
-| [routing-quality-summary.csv](routing-quality-summary.csv) | 历史汇总 | general 集的独立路由档位实验及相对精确档的 NLL 变化 |
-| [long-context.csv](long-context.csv) | 历史汇总 | 约 32K–245K 提示下的预填充耗时、稳态解码与合成检索 |
-| [dram-bandwidth.log](dram-bandwidth.log) | 原始日志 | 单机内存读与复制微测，单位 GB/s |
+| [quality/](quality/) | Raw per-case TSV | Five scorer outputs with token counts, NLL, first-token matches, and greedy LCP by case ID |
+| [decode-microbench-runs.csv](decode-microbench-runs.csv) | Individual historical measurements | Three runs per configuration with a 28-token prompt and 1,500 decode tokens, with the token source identified |
+| [agent-hot-runs.csv](agent-hot-runs.csv) | Individual historical measurements | Recorded warm decode speeds for the internal tool-calling benchmark and all-turn metrics where available |
+| [performance-summary.csv](performance-summary.csv) | Historical summary | Exact-mode speed ranges, 14,392-token prefill, follow-up latency, and Lite short-prompt speed |
+| [routing-quality-summary.csv](routing-quality-summary.csv) | Historical summary | Separate routing-mode experiment on general, with NLL change relative to Exact mode |
+| [long-context.csv](long-context.csv) | Historical summary | Prefill times, steady-state decode speeds, and synthetic retrieval for prompts of about 32K–245K tokens |
+| [dram-bandwidth.log](dram-bandwidth.log) | Raw log | Memory read and copy microbenchmarks on the workstation, in GB/s |
 
-质量文件中的 `case_…` 是对应公开数据集的样例 ID。general 火种和两个 nt-llama 文件各 100 条。router 火种预填充文件为 106 条，nt-llama 文件为 112 条，比较时取共同样例。字段和配对结果见 [质量测试](../QUALITY.md)。
+Identifiers of the form `case_…` match cases in the corresponding public dataset. The three general files contain 100 cases each. The router prefill file for EMBER contains 106 cases and the nt-llama router file contains 112. Comparisons use the shared cases. [Field definitions and paired results](../QUALITY.md)
 
-逐次测速 CSV 中的 `observation` 按已记录的逐组顺序编号。汇总文件中的 `low` 和 `high` 为记录中的区间边界，单值的两个边界相同，`aggregation` 标注观测范围、单值或均值。空字段代表原记录未提供该值。约 32K–245K 是提示长度标签。DRAM 的复制带宽按读写流量之和计量。
+The `observation` field in the individual-run CSVs follows the recorded order within each group. In the summary CSVs, `low` and `high` give the bounds of the recorded range. A single reported number appears in both fields. The `aggregation` field identifies a range, a single value, or a mean. Blank fields indicate unavailable values. The 32K–245K labels indicate approximate prompt lengths. DRAM copy bandwidth counts both read and write traffic.
 
-以上记录由项目在同一套 Windows 11 单 RTX 5090 主机上生成。发布的逐次摘录保留测量值及已知设置，内部对话正文、运行日志与时间戳未随摘录打包。独立 HTTP 复测格式见 [测试协议](../BENCHMARK.md)。
+The project measured these results on the same Windows 11 workstation with one RTX 5090. Individual-run extracts retain the recorded values and known settings. Conversation text, service logs, and timestamps are omitted from the extracts. [Standalone HTTP measurement protocol](../BENCHMARK.md)

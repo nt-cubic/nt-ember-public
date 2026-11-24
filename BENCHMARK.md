@@ -1,34 +1,36 @@
-# 测试协议
+# Benchmark Protocol
 
-历史结果对应 Windows 11（WDDM）、RTX 5090 32 GB、Ryzen 9 9950X3D、128 GB DDR5 和 NVMe SSD。使用 DeepSeek-V4.1-Flash-1017 的 UD-IQ1_S 量化版，单个请求串行运行。
+**English** · [简体中文](BENCHMARK.zh-CN.md)
 
-## 负载定义
+Historical results were measured on Windows 11 (WDDM) with one RTX 5090 (32 GB), a Ryzen 9 9950X3D, 128 GB of DDR5, and an NVMe SSD. The model was DeepSeek-V4.1-Flash-1017 in UD-IQ1_S. Requests ran one at a time.
 
-| 负载 | 输入和配置 | 统计口径 |
+## Workloads
+
+| Workload | Input and configuration | Metric |
 | --- | --- | --- |
-| 解码微基准 | 28 token 初始提示，解码 1,500 个 token。火种 fed 组喂固定 token，nt-llama 使用自由生成 | 稳态解码 token/s，三次观测和算术均值。比较时保留 fed / 自由生成标签 |
-| 内部工具调用合约 | 10 轮对话，带工具，思考开启，温度 0.6，未设输出 token 上限，上下文约 4K–15K | 第 2–10 轮热态解码 token/s，另记全轮结果（如有） |
-| 预填充 | 14,392 token 真实提示，模型已加载，约 20.5 GiB 专家缓存配置 | 新计算的提示 token/s，记录观测范围 |
-| 追问 | 保持同一前缀，追问新增 470 token | 从发出追问到首次输出的延迟 |
-| 长上下文 | 提示约 32K、64K、128K、245K，精确档，关闭投机 | 预填充耗时，400 token 稳态解码速度，指定深度的检索结果 |
+| Decode microbenchmark | Start with a 28-token prompt and decode 1,500 tokens. EMBER's fed run uses a fixed token stream. nt-llama generates freely | Steady-state decode tokens/s, three observations, and their arithmetic mean. Keep the fixed-stream and free-generation labels when comparing results |
+| Internal tool-calling agent benchmark | 10 turns with tools, thinking enabled, temperature 0.6, and no explicit output token cap. Context spans about 4K–15K tokens | Warm decode tokens/s over turns 2–10, with an all-turn result where available |
+| Prefill | Natural 14,392-token prompt, model already loaded, and about 20.5 GiB of configured expert cache | Newly processed prompt tokens/s, reported as an observed range |
+| Follow-up | Reuse a prefix and append 470 tokens | Time from sending the follow-up to first output |
+| Long context | Prompts of about 32K, 64K, 128K, and 245K tokens in Exact mode with speculation off | Prefill latency, steady-state decode throughput over 400 tokens, and retrieval at specified depths |
 
-历史工具调用对话、固定 token 序列及完整服务日志未随首发材料公开。结果的可核算程度见 [结果索引](results/README.md)。
+The first publication includes available metrics from the internal tool-calling runs and fixed-stream benchmark. The original conversations, fixed token sequence, and complete service logs were omitted. [Available data and measurement detail](results/README.md)
 
-## 独立 HTTP 测速
+## Standalone HTTP measurements
 
-使用 [benchmark/](benchmark/README.md) 对已经运行的本地 OpenAI-compatible Chat Completions 服务发起流式请求。默认用三条合成短输入，也可传入长提示或包含对话历史的 JSONL 用例。该脚本执行公开 HTTP 口径，历史微基准和内部 agent 合约各有自己的负载定义。
+The [benchmark tools](benchmark/README.md) send streaming requests to a running local OpenAI-compatible Chat Completions server. They default to three synthetic short prompts and accept JSONL cases with long prompts or conversation history. The HTTP benchmark uses the metrics below. The historical microbenchmark and internal agent benchmark use the workloads specified above.
 
-| 指标 | 计量方式 |
+| Field | How it is measured |
 | --- | --- |
-| `ttft_ms` | 客户端从发出请求到首个含正文、思考内容或工具调用的 SSE delta。仅角色声明的事件不计入 |
-| `elapsed_ms` | 客户端等待流结束的时间，含排队、传输、预填充与解码 |
-| `prompt_tokens` / `cached_tokens` / `completion_tokens` | 优先取服务端 usage 中的计数，在字段可用时用服务端 timings 补齐 |
-| `prompt_tps` / `decode_tps` | 服务端 timings 的预填充与解码速度。字段缺失时保持为空 |
+| `ttft_ms` | Time from sending the request to the first SSE delta with answer text, reasoning, or a tool call. A role-only event does not count |
+| `elapsed_ms` | Client time until the stream finishes, including queueing, transport, prefill, and decode |
+| `prompt_tokens` / `cached_tokens` / `completion_tokens` | Server-side usage counts, with timing fields used as a fallback where available |
+| `prompt_tps` / `decode_tps` | Server-reported prefill and decode throughput. Missing timing fields are reported as null |
 
-## 对照步骤
+## Comparison procedure
 
-1. 记录引擎版本、模型和量化版本、系统与驱动、显存及内存、上下文上限、专家缓存、路由档位、投机与采样设置。
-2. 确保同一张 GPU 没有其他推理负载。保持相同的请求内容、模板、采样参数、输出上限和并发度。
-3. 为冷启动、模型已加载且前缀冷、前缀复用分别取样。需要比较相同前缀的首跑和复用时，保存每次的缓存 token 数。冷启动场景需在各次测量前重新启动服务。
-4. 每个条件至少保留三次逐请求记录，报告样本数和中位数，注明错误和重复中途的环境变化。A/B 测试可交错运行，减少机器状态漂移影响。
-5. 同时报告实际生成 token 数、停止原因与服务端计时是否可用。将不同量化、提示长度、投机设置或质量档位的数字标注各自条件。
+1. Record the engine version, model and quantization revision, OS and driver, VRAM and RAM, context limit, expert-cache configuration, routing mode, speculation, and sampling settings.
+2. Keep other inference workloads off the GPU. Match the request content, chat template, sampling parameters, output cap, and concurrency.
+3. Measure cold startup, a loaded model with a cold prefix, and prefix reuse separately. When comparing a first request with reuse of the same prefix, save the cached token count for each request. Restart the server before each cold-start measurement.
+4. Keep at least three per-request records for each condition. Report the sample count and median, plus any errors or changes in the environment. Interleaving A/B runs can reduce the effect of machine state drifting over time.
+5. Report the generated token count, finish reason, and availability of server timings. Label results with the applicable quantization, prompt length, speculation settings, and quality mode.

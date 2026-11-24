@@ -1,25 +1,27 @@
 # FAQ
 
-## 火种开源吗？在哪里下载？
+**English** · [简体中文](FAQ.zh-CN.md)
 
-火种推理引擎闭源。本仓库内可取得公开报告、独立测速与质量汇总脚本，以及已发布的测试数据。引擎分发与接入需求可通过 [技术交流与合作](CONTACT.md) 提出。
+## Is EMBER open source? Where can I get it?
 
-## 验证过哪些平台和模型？
+The EMBER inference engine is closed source. This repository provides the public report, standalone benchmark and scoring-summary scripts, and published measurement data. To discuss distribution or integration, contact the maintainer. [Technical discussion and collaboration](CONTACT.md)
 
-公开记录针对 Windows 11（WDDM）、一张 RTX 5090（32 GB）、128 GB 内存，以及 DeepSeek-V4.1-Flash-1017 的 UD-IQ1_S 量化版。使用 Fast、Faster 或 Turbo 时请参照对应的质量与速度结果。Linux、多卡、其他 GPU、其他量化、不同模型与多用户并发均超出本次验证范围。
+## Which platforms and models have been tested?
 
-## 什么叫精确档？
+The published results cover Windows 11 (WDDM), one RTX 5090 (32 GB), 128 GB of RAM, and DeepSeek-V4.1-Flash-1017 in UD-IQ1_S. Fast, Faster, and Turbo have their own speed and quality results. Linux, multiple GPUs, other GPU models, other quantizations or models, and concurrent users are outside the scope of this validation.
 
-精确档按模型分数选择专家，保持所用量化权重与 F16 KV 的精度。若启用精确投机解码，提出的草稿由主模型验证。报告中的精确档仍基于 UD-IQ1_S 量化，跨引擎逐位一致性取决于数值实现。 [质量测试](QUALITY.md)
+## What does Exact mode mean?
 
-## 支持哪些客户端？
+Exact mode selects experts according to the model's scores and preserves the precision of the quantized weights and the F16 KV cache. When exact speculative decoding is enabled, the target model verifies proposed drafts. Exact mode in this report uses UD-IQ1_S weights. Bitwise agreement across engines depends on their numerical implementations. [Quality evaluation](QUALITY.md)
 
-项目实现 OpenAI-compatible `/v1/chat/completions`（流式与非流式，支持工具调用）以及 `/v1/models`。客户端需要核对其使用的接口和请求字段。公开测速脚本可连接实现了流式 Chat Completions 的现有服务，额外计数字段的可用性取决于服务端。 [测试协议](BENCHMARK.md)
+## Which clients can connect?
 
-## 256K 指什么？
+EMBER implements OpenAI-compatible `/v1/chat/completions` with streaming, non-streaming, and tool calls, plus `/v1/models`. Check that the server supports the endpoints and request fields your client uses. The public benchmark script can connect to a running server that supports streaming Chat Completions. Additional counters depend on the server. [Benchmark protocol](BENCHMARK.md)
 
-256K 指引擎配置的 262,144 token 上限，包含模板、提示与生成。公开测量中有约 245K token 的提示检索和解码记录。 [公开技术报告](PUBLIC-TECH-REPORT.md)
+## What does 256K mean?
 
-## 离线运行需要什么？
+256K is the configured limit of 262,144 tokens, shared by the chat template, prompt, and generated output. The published retrieval and decode measurements include prompts of about 245K tokens. [Technical report](PUBLIC-TECH-REPORT.md)
 
-先在本机准备引擎、权重和依赖，并使用由本机承担的工具。推理阶段在本机执行。第三方权重与数据遵循各自上游的授权条款。 [公开技术报告](PUBLIC-TECH-REPORT.md)
+## What does offline operation require?
+
+Prepare the engine, weights, and dependencies locally and use tools that can run on the same machine. Inference runs locally. Third-party weights and data are subject to their upstream license terms. [Technical report](PUBLIC-TECH-REPORT.md)

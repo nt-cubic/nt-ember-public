@@ -1,26 +1,28 @@
-# 独立测速与质量汇总
+# Standalone Benchmarks and Quality Summaries
 
-使用 Python 3.10 或以上版本，依赖标准库。以下命令从仓库根目录执行。
+**English** · [简体中文](README.zh-CN.md)
 
-## HTTP 测速
+These scripts use the Python standard library and require Python 3.10 or later. Run the commands below from the repository root.
 
-先启动待测服务，再将 `--base-url` 和 `--model` 换成服务的 API 根路径和模型 ID。示例端口为 8080，模型 ID 通常可从服务的 `/v1/models` 获得。
+## HTTP benchmark
+
+Start the server you want to test, then set `--base-url` to the API base URL and `--model` to the served model ID. The example uses port 8080. The server's `/v1/models` endpoint usually lists its model IDs.
 
 ```sh
 python benchmark/run.py --base-url http://127.0.0.1:8080/v1 --model deepseek-v4.1-local --repeats 3 --output local-run.jsonl
 ```
 
-默认顺序执行 [三条合成短提示](cases.jsonl)，每条连跑三次。`--warmup 1` 可在每条用例之前增加一次不计入统计的请求。重复输入可能命中缓存，使用 `cached_tokens` 检查复用情况。若服务拒绝流式 usage 参数，可添加 `--no-stream-usage`。
+By default, the script runs the [three short synthetic prompts](cases.jsonl) in order, with three consecutive requests per case. Use `--warmup 1` to send an unmeasured request before each case. Repeating a request can reuse the prefix. Check `cached_tokens` to see how much was reused. If the server rejects the streaming usage option, add `--no-stream-usage`.
 
-用 `--cases path/to/cases.jsonl` 指定自定义负载。每行含唯一的 `id` 和一个含 `messages` 的 `request` 对象。请求体可设温度、输出上限、工具或思考参数，脚本统一发送流式单序列请求。对照长提示或追问时，把完整消息历史放进各自的请求，并按预期的缓存顺序安排用例。
+Use `--cases path/to/cases.jsonl` to supply a custom workload. Each line needs a unique `id` and a `request` object with `messages`. The request may specify temperature, output limits, tools, or thinking parameters. The script sends streaming, single-sequence requests. For long-prompt or follow-up benchmarks, include the full conversation history in each request and arrange the cases in the intended cache order.
 
 ```json
 {"id":"append","request":{"messages":[{"role":"user","content":"Give two uses of a compass."},{"role":"assistant","content":"Navigation and mapping."},{"role":"user","content":"Which use matters at sea?"}],"temperature":0,"max_tokens":128}}
 ```
 
-输出路径应为尚未存在的文件。JSONL 逐请求保存计数、计时、停止原因或错误类型，不记录消息正文和模型输出。标准输出按用例给出中位数及有效样本数。出现请求错误时进程返回非零状态，已保存的行可用于排查。客户端测量口径见 [测试协议](../BENCHMARK.md)。
+Choose an output file that does not yet exist. The JSONL file records per-request counts, timings, finish reasons, or error types. Message text and model output are omitted. Standard output shows the median and the number of valid samples per case. Request errors produce a nonzero exit code, and completed records are available in the output file. [Measurement definitions](../BENCHMARK.md)
 
-## 重算质量表
+## Recalculate the quality table
 
 ```sh
 python benchmark/quality_summary.py results/quality/general-nt-rerun.tsv results/quality/general-ember.tsv
@@ -29,4 +31,4 @@ python benchmark/quality_summary.py results/quality/router-nt-rerun.tsv results/
 python benchmark/quality_summary.py results/quality/router-nt-rerun.tsv
 ```
 
-单个文件汇总全部样例。两个文件先按样例 ID 配对，核对提示和目标 token 数，再计算两侧指标与 NLL 差，并列出各自独有的样例。
+With one file, the script summarizes all cases. With two files, it matches cases by ID and checks prompt and target token counts. It then reports the metrics for each side, the NLL difference, and any cases unique to either file.

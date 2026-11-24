@@ -1,45 +1,47 @@
-# 火种 EMBER 公开技术报告
+# EMBER Public Technical Report
 
-测量记录覆盖 2026 年 11 月 21–23 日。工作负载为 DeepSeek-V4.1-Flash-1017 文本推理，硬件为单 RTX 5090（32 GB）、Ryzen 9 9950X3D、128 GB 双通道 DDR5 和 NVMe SSD，系统为 Windows 11（WDDM）。模型采用 Unsloth 的 UD-IQ1_S 量化。 [DeepSeek 模型卡](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017) · [Unsloth GGUF](https://huggingface.co/unsloth/DeepSeek-V4.1-Flash-1017-GGUF)
+**English** · [简体中文](PUBLIC-TECH-REPORT.zh-CN.md)
 
-## 资源约束
+The measurements cover November 21–23, 2026. The workload was DeepSeek-V4.1-Flash-1017 text inference using Unsloth's UD-IQ1_S quantization. The workstation ran Windows 11 (WDDM) with one RTX 5090 (32 GB VRAM), a Ryzen 9 9950X3D, 128 GB of dual-channel DDR5, and an NVMe SSD. [DeepSeek model card](https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash-1017) · [Unsloth GGUF](https://huggingface.co/unsloth/DeepSeek-V4.1-Flash-1017-GGUF)
 
-模型的路由专家权重约 107 GiB，远大于单卡显存。每生成一个 token，路由器为每层选出的专家决定下一步需要读取哪些权重。解码的主要成本之一是处理未命中显存缓存的专家，CPU 内存带宽和 PCIe 搬运能力共同限制这一部分。Engram 查找表由本机 SSD 支撑。
+## Hardware constraints
 
-硬件微测显示双通道内存顺序读取峰值约 68 GB/s，锁页源经 PCIe 5.0 x16 向设备传输约 54–57 GB/s。CPU 内存访问和 DMA 会竞争主机带宽，估算未命中成本时需把这种竞争计入。
+The model's routed expert weights total about 107 GiB, well beyond the memory capacity of one card. Each generated token triggers expert selection at every layer. A major decode cost is processing experts that miss the GPU cache. Host memory bandwidth and PCIe transfer throughput both limit this work. The Engram lookup table is backed by local SSD storage.
 
-## 单用户推理路径
+Hardware microbenchmarks measured a peak sequential read bandwidth of about 68 GB/s from dual-channel memory and about 54–57 GB/s for transfers from pinned host memory to the GPU over PCIe 5.0 x16. CPU memory accesses and DMA share host bandwidth, so the cost of cache misses depends on their contention.
 
-- **逐 token 解码。** 使用 CUDA Graph 降低 CPU 提交开销。GPU 上的显存缓存承接高频专家。未命中时可由 CPU 就地计算，或经 DMA 送回 GPU 执行，避免把全部流量压在一条路径上。
-- **长提示预填充。** 批量前向按层处理权重和激活，预填充阶段可借用专家缓存的显存作临时工作区。多轮会话在前缀匹配时复用现有状态，只处理新增 token。
-- **长上下文。** KV 状态按需增长，并与专家缓存共享显存预算。配置上限为 262,144 token，提示、模板及生成共用该预算。约 245K token 的检索用例已有通过记录。
-- **投机解码。** 精确配置可用 DSpark 和上下文后缀提出草稿，由主模型验证。项目对批量验证与逐步解码做一致性检查。
-- **可选加速档。** Lite 调整专家选择，Fast、Faster 和 Turbo 还可跳过部分低权重未命中专家。预填充沿用精确路由。加速档的速度和质量需各自记录。
+## Single-user inference
 
-精确档保留模型在所用量化权重下的路由语义，KV 使用 F16。CPU/GPU 算术路径和工作负载可影响数值与速度。具体质量证据及比较范围见 [质量测试](QUALITY.md)。
+- **Token-by-token decoding.** CUDA Graphs reduce CPU submission overhead. Frequently used experts reside in the GPU cache. On a miss, the engine can compute the expert in place on the CPU or transfer it to the GPU via DMA. This distributes the load across both paths.
+- **Long-prompt prefill.** The batched forward pass processes weights and activations layer by layer. Prefill can borrow GPU expert-cache memory as temporary workspace. In a multi-turn session, a matching prefix lets the engine reuse existing state and process only the new tokens.
+- **Long context.** KV state grows on demand and shares a VRAM budget with the expert cache. The configured limit is 262,144 tokens, shared by the prompt, chat template, and generated output. Retrieval was tested at about 245K prompt tokens.
+- **Speculative decoding.** Exact mode can use DSpark and context suffixes to propose drafts for the target model to verify. The project checks consistency between batched verification and token-by-token decoding.
+- **Optional speed modes.** Lite adjusts expert selection. Fast, Faster, and Turbo can also skip some low-weight experts that miss the GPU cache. Prefill keeps exact routing. Each mode has its own performance and quality measurements.
 
-## 性能结果
+Exact mode preserves the model's routing semantics for the quantized weights and uses F16 KV. CPU and GPU arithmetic paths can affect numerical results, and performance varies with the workload. [Quality evaluation and scope](QUALITY.md)
 
-| 负载 | 火种 | 参考结果或条件 |
+## Performance results
+
+| Workload | EMBER | Reference result or conditions |
 | --- | --- | --- |
-| 28 token 提示，解码约 1.5K token | 精确、无投机，固定 token 流三次均值 67.8 token/s | nt-llama 精确、无投机，自由贪心三次均值 32.2 token/s |
-| 10 轮工具调用，思考开启、采样 | 精确档历史范围 58–64 token/s，代表测次 61.36 token/s | nt-llama 精确档 34.34 token/s |
-| 同类工具调用，Turbo 档 | 两次均值 83.8 token/s | general NLL 相对精确档约 +2.4% |
-| 模型已加载，14,392 token 提示 | 2,824–3,069 token/s | 约 20.5 GiB 专家缓存配置 |
-| 复用前缀，追加 470 token | 首次输出 1.90–1.95 s | nt-llama 记录值 4.3 s |
-| 约 128K / 245K 提示，精确、无投机 | 400 token 稳态解码 45.7 / 45.4 token/s | 两个长度各三个检索深度通过 |
+| 28-token prompt, followed by about 1.5K decode tokens | Exact, speculation off, fixed token stream. Three-run mean of 67.8 tokens/s | nt-llama, exact, speculation off, free greedy generation. Three-run mean of 32.2 tokens/s |
+| 10 turns with tool calls, thinking enabled, sampling | Exact mode ranged from 58 to 64 tokens/s in historical runs. One representative run reached 61.36 tokens/s | nt-llama Exact mode measured 34.34 tokens/s |
+| Tool-calling workload in Turbo mode | Two-run mean of 83.8 tokens/s | NLL on general rose by about 2.4% relative to Exact mode |
+| Model loaded, 14,392-token prompt | 2,824–3,069 prefill tokens/s | About 20.5 GiB of configured expert cache |
+| Prefix reuse with 470 new tokens | 1.90–1.95 s to first output | nt-llama recorded 4.3 s |
+| About 128K and 245K prompt tokens, Exact mode with speculation off | 45.7 and 45.4 tokens/s respectively over 400 steady-state decode tokens | Both lengths passed retrieval at all three tested depths |
 
-火种的固定 token 微基准使用同一段 token 流，nt-llama 的自由贪心会随输出改变专家访问。工具调用场景同样受采样和工具轮次影响。客户端可用独立脚本评估自选负载，测量协议和证据粒度见 [测试协议](BENCHMARK.md) 和 [结果索引](results/README.md)。
+EMBER's fixed-stream microbenchmark feeds the same token sequence each time. In nt-llama's free greedy generation, the generated text determines which experts are accessed. Sampling and tool turns also affect the agent workload. The standalone scripts can measure custom workloads over HTTP. [Benchmark protocol](BENCHMARK.md) · [Measurement data](results/README.md)
 
-## 加速档的质量取舍
+## Quality trade-offs by speed mode
 
-| 档位 | 速度记录 | general NLL 相对精确档 |
+| Mode | Recorded speed | NLL on general vs. Exact mode |
 | --- | --- | --- |
-| Lite | 六类短提示贪心平均 85.4 token/s，精确档为 71.6 token/s | −0.13%，在该轮实验的波动范围内 |
-| Fast | 工具调用热态约 74.5 token/s | +0.85% |
-| Faster | 工具调用热态约 80.4 token/s | +1.3% |
-| Turbo | 工具调用热态约 83.8 token/s | +2.4% |
+| Lite | 85.4 tokens/s on average across six short-prompt categories with greedy decoding. Exact mode averaged 71.6 | −0.13%, within the variation observed in those runs |
+| Fast | About 74.5 tokens/s in the warm tool-calling benchmark | +0.85% |
+| Faster | About 80.4 tokens/s in the warm tool-calling benchmark | +1.3% |
+| Turbo | About 83.8 tokens/s in the warm tool-calling benchmark | +2.4% |
 
-质量差异针对测试样例和运行设置。短提示贪心速度与工具调用热态速度采用不同负载。加速档记录为历史汇总，逐样例文件覆盖的配置见 [质量测试](QUALITY.md)。
+These quality differences apply to the tested cases and settings. Short-prompt greedy decoding and warm tool-calling runs use different workloads. The speed-mode figures are historical summaries. [Configurations covered by per-case files](QUALITY.md)
 
-已验证范围集中在这套 Windows 单卡环境、单用户文本推理和指定模型。约 245K token 的检索验证覆盖少量合成位置。动态上下文历史上记录过未复现的崩溃与卡死，稳定性仍受具体负载影响。
+Validation covers this single-GPU Windows setup, one user, and text inference with the specified model. The roughly 245K-token retrieval check covers three synthetic needle positions. Historical runs recorded a crash and a hang during dynamic context use. Subsequent attempts did not reproduce them, and stability may vary by workload.

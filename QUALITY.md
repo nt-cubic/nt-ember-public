@@ -1,30 +1,32 @@
-# 质量测试
+# Quality Evaluation
 
-## 固定参考续写
+**English** · [简体中文](QUALITY.zh-CN.md)
 
-测试把公开数据集中的提示经 DeepSeek chat template 渲染，思考关闭，逐位置输入参考续写的 token 并读取该 token 的概率。数据集由 DwarfStar 收集自 DeepSeek API。可获取提示、续写、manifest 和参考评分流程。 [DwarfStar 质量测试与数据集](https://github.com/antirez/ds4/tree/b3f50180ec2c7324892be1f50bc83555ccb8d5e7/gguf-tools/quality-testing)
+## Fixed reference continuations
 
-- **平均 NLL（nat/token）**为全部目标位置负对数似然之和除以目标 token 总数，越低表示对这些参考 token 分配的概率越高。
-- **首 token 命中**统计贪心首 token 与参考续写首 token 相同的样例数。
-- **平均 LCP**统计贪心输出与参考续写的最长公共前缀，再按样例平均，单位是 token。
+We render prompts from the public datasets with the DeepSeek chat template and thinking disabled. With teacher forcing, we feed the reference continuation token by token and record the probability assigned to each target token. DwarfStar collected the reference data from the DeepSeek API. Its repository provides the prompts, continuations, manifests, and reference scoring procedure. [DwarfStar evaluation datasets and methodology](https://github.com/antirez/ds4/tree/b3f50180ec2c7324892be1f50bc83555ccb8d5e7/gguf-tools/quality-testing)
 
-## 逐样例结果
+- **Mean NLL (nats/token).** Sum the negative log-likelihood across target positions and divide by the total number of target tokens. Lower values indicate more probability assigned to the observed reference tokens.
+- **First-token matches.** Count the cases where the first greedy token matches the first reference token.
+- **Mean LCP (tokens).** For each case, find the longest common prefix of the greedy output and reference continuation, then average its length across cases.
 
-| 数据与设置 | 样例 | 目标 token | 平均 NLL | 首 token 命中 | 平均 LCP |
+## Per-case results
+
+| Dataset and configuration | Cases | Target tokens | Mean NLL | First-token matches | Mean LCP |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| general · nt-llama，融合开 | 100 | 3,388 | 0.792989 | 81/100 | 6.65 |
-| general · nt-llama，融合关 | 100 | 3,388 | 0.790577 | 81/100 | 6.61 |
-| general · 火种精确档，逐 token 解码 | 100 | 3,388 | 0.793400 | 80/100 | 6.72 |
-| router · nt-llama，配对的 106 条 | 106 | 7,740 | 0.617568 | 73/106 | 3.93 |
-| router · 火种精确档，预填充后评分 | 106 | 7,740 | 0.618124 | 76/106 | 3.92 |
-| router · nt-llama，完整重跑 | 112 | 8,192 | 0.605113 | 74/112 | 3.78 |
+| general · nt-llama, fusion on | 100 | 3,388 | 0.792989 | 81/100 | 6.65 |
+| general · nt-llama, fusion off | 100 | 3,388 | 0.790577 | 81/100 | 6.61 |
+| general · EMBER Exact mode, token-by-token decode | 100 | 3,388 | 0.793400 | 80/100 | 6.72 |
+| router · nt-llama, paired subset | 106 | 7,740 | 0.617568 | 73/106 | 3.93 |
+| router · EMBER Exact mode, scored after prefill | 106 | 7,740 | 0.618124 | 76/106 | 3.92 |
+| router · nt-llama, full rerun | 112 | 8,192 | 0.605113 | 74/112 | 3.78 |
 
-general 上火种相对融合开启的 nt-llama 增加约 0.000411 nat/token（+0.052%）。相同参考引擎切换融合设置的差值约 0.002412 nat/token，可用于观察实现设置带来的数值变化。router 的火种文件缺少 6 条最长提示，配对结果覆盖的火种提示最多 7,224 token。上述数据支持这两个样例集上的比较，任务正确率、自由生成和更长提示需要相应评测。
+On general, EMBER's NLL is about 0.000411 nats/token (+0.052%) higher than nt-llama with fusion on. Toggling fusion in the reference engine changed its NLL by about 0.002412 nats/token, which illustrates how an implementation setting affects the score. The EMBER router file omits the six longest prompts. The longest prompt in the paired comparison is 7,224 tokens. Task accuracy, free generation, and longer prompts require their own evaluations.
 
-每个 TSV 保留评分器的原始数值精度。汇总脚本验证用例 ID 和 token 计数，按共同用例输出两侧指标。发布的表格可直接从 [逐样例 TSV](results/quality/) 重算，命令见 [脚本说明](benchmark/README.md)。
+The TSV files retain the scorer's original numeric precision. The summary script verifies case IDs and token counts and reports metrics on shared cases. [Per-case TSV files](results/quality/) · [Commands to recalculate the table](benchmark/README.md)
 
-## 长上下文与解码一致性
+## Long context and decode consistency
 
-- **合成检索。** 约 64K、128K、245K token 的长提示，各在约 10%、50%、90% 位置植入标记，检查回复是否召回标记。历史记录各组 3/3 通过，证据层级见 [长上下文汇总](results/long-context.csv)。
-- **数值回归。** 项目以参考引擎逐层对照张量和 logits，同时检查可无损改动前后的解码状态、贪心输出，以及投机验证与逐步解码的一致性。
-- **加速档。** Lite、Fast、Faster、Turbo 的 NLL 变化来自单独的 general 扫描，该组精确档 NLL 为 0.791885。 [档位质量汇总](results/routing-quality-summary.csv)
+- **Synthetic retrieval.** We inserted a marker at approximately 10%, 50%, and 90% of prompts of about 64K, 128K, and 245K tokens. At each length, all three runs returned the marker. [Long-context summary](results/long-context.csv)
+- **Numerical regression checks.** The project compares tensors and logits layer by layer with a reference engine. It also checks decode state and greedy output before and after changes intended to preserve the result, and verifies consistency between speculative verification and token-by-token decoding.
+- **Speed modes.** NLL changes for Lite, Fast, Faster, and Turbo come from a separate sweep on general. Exact mode scored 0.791885 NLL in that sweep. [Routing quality summary](results/routing-quality-summary.csv)
