@@ -10,11 +10,26 @@ The model's routed expert weights total about 107 GiB, well beyond the memory ca
 
 Hardware microbenchmarks measured a peak sequential read bandwidth of about 68 GB/s from dual-channel memory and about 54–57 GB/s for transfers from pinned host memory to the GPU over PCIe 5.0 x16. CPU memory accesses and DMA share host bandwidth, so the cost of cache misses depends on their contention.
 
+## Expert placement during decode
+
+| Expert location | How the engine uses it |
+| --- | --- |
+| GPU memory | The GPU computes experts present in its VRAM cache. |
+| System memory, transferred to GPU | Selected misses are transferred on demand over PCIe via DMA, then computed on the GPU. A transferred expert can stay in the cache for reuse. |
+| System memory | The CPU reads and computes the remaining misses in place. This saves a PCIe transfer and uses CPU compute and DRAM bandwidth. |
+
+CPU execution and on-demand GPU transfers can overlap with work on cached experts. The expert weights in the measured configuration are resident in system RAM. The SSD serves Engram lookups, and streaming routed expert weights from SSD is a separate development milestone. [Decode trade-offs](WHY-FASTER.md)
+
+## Dynamic KV cache
+
+The KV cache and expert cache share a VRAM budget. Short conversations leave more room for experts. KV capacity grows on demand as the context length increases, reducing the space available for expert reuse. Resetting the context returns that capacity to the expert cache.
+
+The configured limit is 262,144 tokens shared by the prompt, chat template, and generated output. The published retrieval tests reached about 245K prompt tokens. [Long-context measurements](results/long-context.csv)
+
 ## Single-user inference
 
-- **Token-by-token decoding.** CUDA Graphs reduce CPU submission overhead. Frequently used experts reside in the GPU cache. On a miss, the engine can compute the expert in place on the CPU or transfer it to the GPU via DMA. This distributes the load across both paths.
-- **Long-prompt prefill.** The batched forward pass processes weights and activations layer by layer. Prefill can borrow GPU expert-cache memory as temporary workspace. In a multi-turn session, a matching prefix lets the engine reuse existing state and process only the new tokens.
-- **Long context.** KV state grows on demand and shares a VRAM budget with the expert cache. The configured limit is 262,144 tokens, shared by the prompt, chat template, and generated output. Retrieval was tested at about 245K prompt tokens.
+- **Long-prompt prefill.** The batched forward pass processes weights and activations layer by layer. Prefill can borrow GPU expert-cache memory as temporary workspace.
+- **Multi-turn prefix reuse.** The engine can append to the live context when it matches the request prefix. If the conversation branches, it can restore a valid checkpoint whose tokens still match and process only the suffix.
 - **Speculative decoding.** Exact mode can use DSpark and context suffixes to propose drafts for the target model to verify. The project checks consistency between batched verification and token-by-token decoding.
 - **Optional speed modes.** Lite adjusts expert selection. Fast, Faster, and Turbo can also skip some low-weight experts that miss the GPU cache. Prefill keeps exact routing. Each mode has its own performance and quality measurements.
 
