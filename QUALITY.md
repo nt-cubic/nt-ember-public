@@ -25,6 +25,14 @@ On general, EMBER's NLL is about 0.000411 nats/token (+0.052%) higher than nt-ll
 
 The TSV files retain the scorer's original numeric precision. The summary script verifies case IDs and token counts and reports metrics on shared cases. [Per-case TSV files](results/quality/) · [Commands to recalculate the table](benchmark/README.md)
 
+![Per-case NLL for EMBER and nt-llama on shared cases, with 100 general cases and 106 router cases. Both axes use a logarithmic scale. The dashed line indicates equal NLL.](figures/fig09-quality.svg)
+
+## Speed and NLL by routing mode
+
+Throughput comes from the 10-turn tool-calling workload. The Exact point uses the representative 61.36 tokens/s run. NLL changes come from a separate sweep on the 100-case general set, against that sweep's own Exact baseline. [Per-run speeds](results/agent-hot-runs.csv) · [NLL by mode](results/routing-quality-summary.csv)
+
+![Relative to Exact in the general sweep, NLL increased by 0.85% for Fast, 1.3% for Faster, and 2.4% for Turbo. Their mean warm decode speeds were 74.5, 80.4, and 83.8 tokens/s.](figures/fig04-speed-quality.svg)
+
 ## Long context and decode consistency
 
 - **Synthetic retrieval.** We inserted a marker at approximately 10%, 50%, and 90% of prompts of about 64K, 128K, and 245K tokens. At each length, all three runs returned the marker. [Long-context summary](results/long-context.csv)

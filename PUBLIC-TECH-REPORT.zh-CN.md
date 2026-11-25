@@ -10,6 +10,8 @@
 
 硬件微测显示双通道内存顺序读取峰值约 68 GB/s，锁页源经 PCIe 5.0 x16 向设备传输约 54–57 GB/s。CPU 内存访问和 DMA 会竞争主机带宽，估算未命中成本时需把这种竞争计入。
 
+![工作站微基准测得 DRAM 顺序读取峰值 68.3 GB/s，复制的读写合计峰值 64.9 GB/s，主机到 GPU 的 PCIe 传输为 54–57 GB/s。](figures/fig08-hardware-envelope.svg)
+
 ## 解码时的专家权重放置
 
 | 权重位置 | 执行方式 |
@@ -47,6 +49,20 @@ KV 缓存与专家缓存共享显存预算。短对话把更多显存留给专�
 | 约 128K / 245K 提示，精确、无投机 | 400 token 稳态解码 45.7 / 45.4 token/s | 两个长度各三个检索深度通过 |
 
 火种的固定 token 微基准使用同一段 token 流，nt-llama 的自由贪心会随输出改变专家访问。工具调用场景同样受采样和工具轮次影响。客户端可用独立脚本评估自选负载，测量协议和证据粒度见 [测试协议](BENCHMARK.zh-CN.md) 和 [结果索引](results/README.zh-CN.md)。
+
+### 解码微基准
+
+![精确路由、关闭投机解码。火种固定 token 流均值 67.8 token/s，自由生成范围 52–64。nt-llama 自由生成在启用专家缓存时均值 32.2，专家全在 CPU 时均值 22.1。](figures/fig01-decode-throughput.svg)
+
+### 工具调用解码
+
+精确档标出启用 DSpark 和后缀草稿时的 **61.36 token/s** 代表测次。Fast、Faster、Turbo 标出各自已记录测次的均值，圆点为各次测量。 [逐次测量](results/agent-hot-runs.csv)
+
+![工具调用热态解码。nt-llama 参考值 34.3 token/s，火种精确档代表测次 61.36，Fast、Faster 和 Turbo 的均值为 74.5、80.4、83.8。](figures/fig03-agent-modes.svg)
+
+### 复用前缀的追问
+
+![追问新增 470 token 时的首次输出延迟。nt-llama 历史记录为 4.3 s，火种实测范围为 1.90–1.95 s。](figures/fig07-prefill-reuse.svg)
 
 ## 加速档的质量取舍
 

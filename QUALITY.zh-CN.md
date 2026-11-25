@@ -25,6 +25,14 @@ general 上火种相对融合开启的 nt-llama 增加约 0.000411 nat/token（+
 
 每个 TSV 保留评分器的原始数值精度。汇总脚本验证用例 ID 和 token 计数，按共同用例输出两侧指标。发布的表格可直接从 [逐样例 TSV](results/quality/) 重算，命令见 [脚本说明](benchmark/README.zh-CN.md)。
 
+![火种和 nt-llama 在 100 条 general 与 106 条 router 共同样例上的逐样例 NLL。两轴均为对数刻度，虚线表示 NLL 相同。](figures/fig09-quality.svg)
+
+## 加速档的速度与 NLL
+
+速度来自 10 轮工具调用测试。精确档使用 **61.36 token/s** 的代表测次。NLL 变化来自独立的 general 100 样例扫描，以该轮扫描的精确档为基线。 [逐次测速](results/agent-hot-runs.csv) · [档位 NLL](results/routing-quality-summary.csv)
+
+![相对该轮扫描的精确档，Fast、Faster、Turbo 的 NLL 分别增加 0.85%、1.3%、2.4%，热态解码均值分别为 74.5、80.4、83.8 token/s。](figures/fig04-speed-quality.svg)
+
 ## 长上下文与解码一致性
 
 - **合成检索。** 约 64K、128K、245K token 的长提示，各在约 10%、50%、90% 位置植入标记，检查回复是否召回标记。历史记录各组 3/3 通过，证据层级见 [长上下文汇总](results/long-context.csv)。

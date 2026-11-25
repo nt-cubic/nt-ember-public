@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="460.8pt" height="259.2pt" viewBox="0 0 460.8 259.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>Host memory and PCIe bandwidth</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Host memory and PCIe bandwidth</dc:title>
+    <dc:description>DRAM read and read-plus-write copy peaks from the workstation microbenchmark. PCIe interval is the pinned-host transfer range.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>EMBER</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 259.2
+L 460.8 259.2
+L 460.8 0
+L 0 0
+z
+" style="fill: #fcfaf7"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 156.672 199.584
+L 423.936 199.584
+L 423.936 69.984
+L 156.672 69.984
+z
+" style="fill: #fcfaf7"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 156.672 199.584
+L 156.672 69.984
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="156.672" y="215.320328" transform="rotate(-0 156.672 215.320328)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 220.306286 199.584
+L 220.306286 69.984
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="220.306286" y="215.320328" transform="rotate(-0 220.306286 215.320328)">20</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 283.940571 199.584
+L 283.940571 69.984
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="283.940571" y="215.320328" transform="rotate(-0 283.940571 215.320328)">40</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 347.574857 199.584
+L 347.574857 69.984
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="347.574857" y="215.320328" transform="rotate(-0 347.574857 215.320328)">60</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 411.209143 199.584
+L 411.209143 69.984
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="411.209143" y="215.320328" transform="rotate(-0 411.209143 215.320328)">80</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #20232b" x="290.304" y="233.582047" transform="rotate(-0 290.304 233.582047)">Bandwidth (GB/s)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11"/>
+     <g id="text_7">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(86.99075 91.265146)">DRAM read</text>
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(122.321375 104.325693)">Peak</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_12"/>
+     <g id="text_8">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(85.6595 133.07148)">DRAM copy</text>
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(52.622 146.132262)">Read + write peak</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_13"/>
+     <g id="text_9">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(79.292 174.878049)">PCIe 5.0 ×16</text>
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(82.320125 187.938596)">Host to GPU</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 156.672 82.734968
+L 373.983086 82.734968
+L 373.983086 103.220129
+L 156.672 103.220129
+z
+" clip-path="url(#pff088a9e86)" style="fill: #697789"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 156.672 124.541419
+L 363.165257 124.541419
+L 363.165257 145.026581
+L 156.672 145.026581
+z
+" clip-path="url(#pff088a9e86)" style="fill: #697789"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 156.672 166.347871
+L 328.484571 166.347871
+L 328.484571 186.833032
+L 156.672 186.833032
+z
+" clip-path="url(#pff088a9e86)" style="fill: #bb3a17"/>
+   </g>
+   <g id="LineCollection_1">
+    <path d="M 328.484571 176.590452
+L 338.029714 176.590452
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #20232b; stroke-width: 1.7"/>
+   </g>
+   <g id="LineCollection_2">
+    <path d="M 328.484571 170.737548
+L 328.484571 182.443355
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #20232b; stroke-width: 1.45"/>
+    <path d="M 338.029714 170.737548
+L 338.029714 182.443355
+" clip-path="url(#pff088a9e86)" style="fill: none; stroke: #20232b; stroke-width: 1.45"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 156.672 199.584
+L 423.936 199.584
+" style="fill: none; stroke: #dadfe5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="380.983086" y="96.341806" transform="rotate(-0 380.983086 96.341806)">68.3</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="370.165257" y="138.148258" transform="rotate(-0 370.165257 138.148258)">64.9</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="345.029714" y="179.954709" transform="rotate(-0 345.029714 179.954709)">54–57</text>
+   </g>
+  </g>
+  <g id="text_13">
+   <text style="font-weight: 700; font-size: 20px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="23.04" y="32.704547" transform="rotate(-0 23.04 32.704547)">Host memory and PCIe bandwidth</text>
+  </g>
+  <g id="text_14">
+   <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #444955" x="23.04" y="52.800328" transform="rotate(-0 23.04 52.800328)">32 GB VRAM · 128 GB RAM · 107 GiB of routed experts</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pff088a9e86">
+   <rect x="156.672" y="69.984" width="267.264" height="129.6"/>
+  </clipPath>
+ </defs>
+</svg>

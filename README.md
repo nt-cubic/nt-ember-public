@@ -24,18 +24,15 @@ The performance discussion covers the trade-offs between CPU execution, expert r
 
 ### Short-prompt generation by output type
 
-Turbo mode, greedy decoding, one RTX 5090.
+Table generation reached **127 tokens/s** on one RTX 5090 using Turbo mode and greedy decoding.
 
-| Output type | Decode throughput |
-| --- | ---: |
-| Tables | **127 tokens/s** |
-| JSON | 112 tokens/s |
-| Code | 88–95 tokens/s |
-| Prose | 66–67 tokens/s |
+![Short-prompt decode throughput in Turbo mode. Tables 127, JSON 112, code 88–95, and prose 66–67 tokens/s.](figures/fig05-short-prompts.svg)
 
 ### Long-context decoding
 
 On the same Windows 11 workstation with one RTX 5090 and 128 GB of RAM, EMBER reached **45.4 tokens/s** over 400 steady-state decode tokens after a prompt of about 245K tokens. This run used Exact mode with speculative decoding off. At the same prompt length, the synthetic retrieval test passed at all three tested depths. [Long-context measurement summary](results/long-context.csv)
+
+![Steady-state decode throughput after about 32K, 64K, 128K, and 245K prompt tokens. Results were 47.3, 43–46, 45.7, and 45.4 tokens/s.](figures/fig06-long-context.svg)
 
 ### Agent and prefill workloads
 

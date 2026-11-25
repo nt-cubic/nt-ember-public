@@ -26,18 +26,15 @@ CPU 就地计算、专家复用和长上下文的性能取舍见 [火种为什�
 
 ### 短提示生成速度
 
-单张 RTX 5090，Turbo 档，贪心解码。
+单张 RTX 5090，Turbo 档、贪心解码，表格生成达到 **127 token/s**。
 
-| 输出类型 | 解码速度 |
-| --- | ---: |
-| 表格 | **127 token/s** |
-| JSON | 112 token/s |
-| 代码 | 88–95 token/s |
-| 散文 | 66–67 token/s |
+![Turbo 档短提示解码速度。表格 127、JSON 112、代码 88–95、散文 66–67 token/s。](figures/fig05-short-prompts.svg)
 
 ### 长上下文解码
 
 同一台 Windows 11 工作站，单张 RTX 5090 和 128 GB 内存。输入约 245K token 后，火种在精确路由、关闭投机解码的条件下，400 个稳态解码 token 实测 **45.4 token/s**。同长度的合成检索在三个测试深度均通过。 [长上下文测量汇总](results/long-context.csv)
+
+![约 32K、64K、128K、245K token 提示后的稳态解码速度依次为 47.3、43–46、45.7、45.4 token/s。](figures/fig06-long-context.svg)
 
 ### Agent 与预填充
 

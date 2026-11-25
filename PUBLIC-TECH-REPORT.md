@@ -10,6 +10,8 @@ The model's routed expert weights total about 107 GiB, well beyond the memory ca
 
 Hardware microbenchmarks measured a peak sequential read bandwidth of about 68 GB/s from dual-channel memory and about 54–57 GB/s for transfers from pinned host memory to the GPU over PCIe 5.0 x16. CPU memory accesses and DMA share host bandwidth, so the cost of cache misses depends on their contention.
 
+![Workstation microbenchmarks measured peak DRAM reads of 68.3 GB/s, peak DRAM copy traffic of 64.9 GB/s counting reads and writes, and host-to-GPU PCIe transfers of 54–57 GB/s.](figures/fig08-hardware-envelope.svg)
+
 ## Expert placement during decode
 
 | Expert location | How the engine uses it |
@@ -47,6 +49,20 @@ Exact mode preserves the model's routing semantics for the quantized weights and
 | About 128K and 245K prompt tokens, Exact mode with speculation off | 45.7 and 45.4 tokens/s respectively over 400 steady-state decode tokens | Both lengths passed retrieval at all three tested depths |
 
 EMBER's fixed-stream microbenchmark feeds the same token sequence each time. In nt-llama's free greedy generation, the generated text determines which experts are accessed. Sampling and tool turns also affect the agent workload. The standalone scripts can measure custom workloads over HTTP. [Benchmark protocol](BENCHMARK.md) · [Measurement data](results/README.md)
+
+### Decode benchmark
+
+![Exact decode throughput with speculation off. EMBER averaged 67.8 tokens/s with a fixed token stream and recorded 52–64 tokens/s in free generation. nt-llama's free-generation means were 32.2 with the expert cache and 22.1 with CPU-only experts.](figures/fig01-decode-throughput.svg)
+
+### Tool-calling decode
+
+Exact shows the representative **61.36 tokens/s** run with DSpark and suffix drafting. Fast, Faster, and Turbo show means of their recorded runs. The dots show individual runs for those three modes. [Per-run data](results/agent-hot-runs.csv)
+
+![Warm tool-calling decode measured 34.3 tokens/s for the nt-llama reference, 61.36 for the representative EMBER Exact run, and means of 74.5 for Fast, 80.4 for Faster, and 83.8 for Turbo.](figures/fig03-agent-modes.svg)
+
+### Follow-up with prefix reuse
+
+![Time to first output after a follow-up appended 470 prompt tokens. The historical nt-llama measurement was 4.3 s and EMBER's recorded range was 1.90–1.95 s.](figures/fig07-prefill-reuse.svg)
 
 ## Quality trade-offs by speed mode
 

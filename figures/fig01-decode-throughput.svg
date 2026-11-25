@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="460.8pt" height="266.4pt" viewBox="0 0 460.8 266.4" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>Decode throughput by workload</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Decode throughput by workload</dc:title>
+    <dc:description>Different input conditions are labeled. Range is observed throughput. Single values are three-run means.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>EMBER</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 266.4
+L 460.8 266.4
+L 460.8 0
+L 0 0
+z
+" style="fill: #fcfaf7"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 168.192 207.792
+L 426.24 207.792
+L 426.24 66.6
+L 168.192 66.6
+z
+" style="fill: #fcfaf7"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 168.192 207.792
+L 168.192 66.6
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="168.192" y="223.528328" transform="rotate(-0 168.192 223.528328)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 228.909176 207.792
+L 228.909176 66.6
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="228.909176" y="223.528328" transform="rotate(-0 228.909176 223.528328)">20</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 289.626353 207.792
+L 289.626353 66.6
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="289.626353" y="223.528328" transform="rotate(-0 289.626353 223.528328)">40</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 350.343529 207.792
+L 350.343529 66.6
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="350.343529" y="223.528328" transform="rotate(-0 350.343529 223.528328)">60</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 411.060706 207.792
+L 411.060706 66.6
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #dadfe5; stroke-width: 0.85; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #444955" x="411.060706" y="223.528328" transform="rotate(-0 411.060706 223.528328)">80</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #20232b" x="297.216" y="241.790047" transform="rotate(-0 297.216 241.790047)">Decode throughput (tokens/s)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11"/>
+     <g id="text_7">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(118.517 83.827988)">EMBER</text>
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(59.15825 96.888535)">Fixed token stream</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_12"/>
+     <g id="text_8">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(118.517 118.265061)">EMBER</text>
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(76.4795 131.325608)">Free generation</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_13"/>
+     <g id="text_9">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(118.515125 152.702134)">nt-llama</text>
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(57.15575 165.762681)">Free · expert cache</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_14"/>
+     <g id="text_10">
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(118.515125 187.139207)">nt-llama</text>
+      <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; fill: #444955" transform="translate(57.83825 200.199754)">Free · CPU experts</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 168.192 77.103307
+L 373.922033 77.103307
+L 373.922033 93.977473
+L 168.192 93.977473
+z
+" clip-path="url(#p4a1179c60f)" style="fill: #bb3a17"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 168.192 111.54038
+L 326.056659 111.54038
+L 326.056659 128.414546
+L 168.192 128.414546
+z
+" clip-path="url(#p4a1179c60f)" style="fill: #d87754"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 168.192 145.977454
+L 265.845459 145.977454
+L 265.845459 162.85162
+L 168.192 162.85162
+z
+" clip-path="url(#p4a1179c60f)" style="fill: #697789"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 168.192 180.414527
+L 235.385675 180.414527
+L 235.385675 197.288693
+L 168.192 197.288693
+z
+" clip-path="url(#p4a1179c60f)" style="fill: #697789"/>
+   </g>
+   <g id="LineCollection_1">
+    <path d="M 326.056659 119.977463
+L 362.486965 119.977463
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #20232b; stroke-width: 1.7"/>
+   </g>
+   <g id="LineCollection_2">
+    <path d="M 326.056659 115.156273
+L 326.056659 124.798654
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #20232b; stroke-width: 1.45"/>
+    <path d="M 362.486965 115.156273
+L 362.486965 124.798654
+" clip-path="url(#p4a1179c60f)" style="fill: none; stroke: #20232b; stroke-width: 1.45"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 168.192 207.792
+L 426.24 207.792
+" style="fill: none; stroke: #dadfe5; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="380.922033" y="88.904648" transform="rotate(-0 380.922033 88.904648)">67.8</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="369.486965" y="123.341721" transform="rotate(-0 369.486965 123.341721)">52–64</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="272.845459" y="157.778794" transform="rotate(-0 272.845459 157.778794)">32.2</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="242.385675" y="192.215868" transform="rotate(-0 242.385675 192.215868)">22.1</text>
+   </g>
+  </g>
+  <g id="text_15">
+   <text style="font-weight: 700; font-size: 20px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #20232b" x="23.04" y="33.208547" transform="rotate(-0 23.04 33.208547)">Decode throughput by workload</text>
+  </g>
+  <g id="text_16">
+   <text style="font-size: 12px; font-family: 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #444955" x="23.04" y="54.024328" transform="rotate(-0 23.04 54.024328)">Exact routing · speculation off</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p4a1179c60f">
+   <rect x="168.192" y="66.6" width="258.048" height="141.192"/>
+  </clipPath>
+ </defs>
+</svg>
